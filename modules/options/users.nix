@@ -146,7 +146,7 @@ with lib; let
       };
     };
   };
-  userOpts = _: {
+  userOpts = {name, ...}: {
     options = {
       preferences = mkOption {
         description = "Preferences for this user";
@@ -183,6 +183,11 @@ with lib; let
           which means any change through the Jellyfin GUI will have no effect after a rebuild.
         '';
         default = true;
+      };
+      normalizedUsername = mkOption {
+        type = types.str;
+        default = lib.strings.toUpper name;
+        description = "Username normalized to uppercase. Dont set this manually";
       };
       id = mkOption {
         type = types.nullOr types.str; # TODO: Limit the id to the pattern: "18B51E25-33FD-46B6-BBF8-DB4DD77D0679"
