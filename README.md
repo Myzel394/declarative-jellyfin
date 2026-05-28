@@ -4,6 +4,7 @@
 ![issues badge](https://git.spoodythe.one/spoody/declarative-jellyfin/badges/issues.svg)
 
 > [!NOTE]
+This project will probably be unmaintained soon. 
 Consider using [Jellar](https://github.com/venkyr77/jellarr) instead, as it solves some of the 
 fundamental problems this project have. You can read more about why in Jellar's README.
 
