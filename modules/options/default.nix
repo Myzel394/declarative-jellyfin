@@ -38,6 +38,7 @@ in {
     ./users.nix
     ./libraries.nix
     ./plugins.nix
+    ./livetv.nix
   ];
   options.services.declarative-jellyfin = {
     enable = mkEnableOption "Jellyfin Service";

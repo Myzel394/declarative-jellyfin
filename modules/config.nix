@@ -26,16 +26,24 @@ with lib; let
     then
       if !(hasAttr "tag" x)
       then
-        attrsets.mapAttrsToList (tag: value: {
-          inherit tag;
-          content = prepass value;
-        })
+        attrsets.mapAttrsToList (tag: value:
+          # A value that already carries its own `tag` fully describes its own
+          # XML node (e.g. a pre-tagged nullable field with an `attrib`, see
+          # `livetv.xml`'s `GuideDays`). Don't rewrap it under the record key.
+            if (isAttrs value) && (hasAttr "tag" value)
+            then prepass value
+            else {
+              inherit tag;
+              content = prepass value;
+            })
         x
       else if (hasAttr "content" x)
-      then {
-        inherit (x) tag;
-        content = prepass x.content;
-      }
+      then
+        {
+          inherit (x) tag;
+          content = prepass x.content;
+        }
+        // optionalAttrs (hasAttr "attrib" x) {inherit (x) attrib;}
       else x
     else if (isList x)
     then
@@ -59,6 +67,59 @@ with lib; let
   });
   log = "/var/log/jellyfin.txt";
   print = msg: ''echo "${msg}" | tee --append ${log}'';
+
+  # `LiveTvOptions` contains lists of complex objects (`TunerHosts`,
+  # `ListingProviders`, and each listing provider's `ChannelMappings`) which
+  # need to be wrapped with their C# class name as the per-item tag (mirrors
+  # `prepassedLibraries`'s handling of `pathInfos` below), plus a nullable
+  # `GuideDays` field that must serialize as `<GuideDays xsi:nil="true" />`
+  # rather than being omitted, since it's a nullable value type (`int?`) in
+  # Jellyfin, not a reference type.
+  livetvCased = toPascalCase.fromAttrsRecursive cfg.livetv;
+  prepassedLivetv =
+    livetvCased
+    // {
+      GuideDays =
+        if cfg.livetv.guideDays == null
+        then {
+          tag = "GuideDays";
+          attrib = {"xsi:nil" = "true";};
+          content = "";
+        }
+        else cfg.livetv.guideDays;
+      # `Id` just needs to be a unique string (Jellyfin never parses it as a GUID);
+      # auto-fill it from the entry's position in the list when left unset.
+      TunerHosts =
+        imap1 (
+          index: host: {
+            TunerHostInfo =
+              host
+              // {
+                Id =
+                  if host.Id == null
+                  then toString index
+                  else host.Id;
+              };
+          }
+        )
+        livetvCased.TunerHosts;
+      ListingProviders =
+        imap1 (
+          index: lp: {
+            ListingsProviderInfo =
+              lp
+              // {
+                Id =
+                  if lp.Id == null
+                  then toString index
+                  else lp.Id;
+                ChannelMappings = map (cm: {NameValuePair = cm;}) lp.ChannelMappings;
+              };
+          }
+        )
+        livetvCased.ListingProviders;
+    };
+
   jellyfinConfigFiles = {
     "network.xml" = {
       name = "NetworkConfiguration";
@@ -75,6 +136,10 @@ with lib; let
     "branding.xml" = {
       name = "BrandingOptions";
       content = toPascalCase.fromAttrsRecursive cfg.branding;
+    };
+    "livetv.xml" = {
+      name = "LiveTvOptions";
+      content = prepassedLivetv;
     };
   };
 

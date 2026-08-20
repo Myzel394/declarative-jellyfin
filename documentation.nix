@@ -90,6 +90,20 @@
         .declarative-jellyfin
         .branding;
     }
+    {
+      name = "livetv";
+      options =
+        (import ./modules/options/livetv.nix {
+          inherit lib pkgs;
+          config = {
+            networking.hostName = "config.networking.hostName";
+          };
+        })
+        .options
+        .services
+        .declarative-jellyfin
+        .livetv;
+    }
   ];
 
   inherit (lib) attrsets;
