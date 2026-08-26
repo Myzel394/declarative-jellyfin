@@ -175,6 +175,13 @@ which means any change through the Jellyfin GUI will have no effect after a rebu
 
 **Default**: `true`
 
+### users.*.normalizedUsername
+Username normalized to uppercase. Dont set this manually
+
+**Type**: string
+
+**Default**: `"‹NAME›"`
+
 ### users.*.password
 
 **Type**: null or string

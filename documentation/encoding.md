@@ -91,6 +91,16 @@ Whether to enable Enable hardware decoding for HEVC RExt 12bit.
 
 **Default**: `false`
 
+## encoding.enableEnhancedNvdecDecoder
+Whether to enable Enhanced NVDEC implementation, disable this option to use CUVID if you encounter decoding errors.
+
+https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration/nvidia#tone-mapping-methods
+.
+
+**Type**: boolean
+
+**Default**: `false`
+
 ## encoding.enableFallbackFont
 Whether to enable Enable fallback font.
 
@@ -119,26 +129,6 @@ https://jellyfin.org/docs/general/administration/hardware-acceleration/intel/#co
 Whether to enable Low-Power Encoding can keep unnecessary CPU-GPU sync. On Linux they must be disabled if the i915 HuC firmware is not configured.
 
 https://jellyfin.org/docs/general/administration/hardware-acceleration/intel/#configure-and-verify-lp-mode-on-linux
-.
-
-**Type**: boolean
-
-**Default**: `false`
-
-## encoding.enableEnhancedNvdecDecoder
-Enhanced NVDEC implementation, disable this option to use CUVID if you encounter decoding errors.
-
-https://jellyfin.org/docs/general/post-install/transcoding/hardware-acceleration/nvidia#tone-mapping-methods
-.
-
-**Type**: booleann
-
-**Default**: `false`
-
-## encoding.preferSystemNativeHwDecoder
-Prefer OS native DXVA or VA-API hardware decoders
-
-https://jellyfin.org/docs/general/administration/hardware-acceleration/intel/#tone-mapping-methods
 .
 
 **Type**: boolean
@@ -280,6 +270,16 @@ The recommended value is `2048`.
 **Type**: signed integer
 
 **Default**: `2048`
+
+## encoding.preferSystemNativeHwDecoder
+Whether to enable Prefer OS native DXVA or VA-API hardware decoders
+
+https://jellyfin.org/docs/general/administration/hardware-acceleration/intel/#tone-mapping-methods
+.
+
+**Type**: boolean
+
+**Default**: `false`
 
 ## encoding.qsvDevice
 Specify the device for Intel QSV on a multi-GPU system.

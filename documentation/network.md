@@ -105,11 +105,12 @@ A list of known proxies
 **Default**: `[]`
 
 ## network.localNetworkAddresses
-Whether to enable UNIMPLEMENTED.
+List of interface addresses which Jellyfin will bind to. If empty, all interfaces will be used.
 
-**Type**: boolean
 
-**Default**: `false`
+**Type**: list of string
+
+**Default**: `[]`
 
 ## network.localNetworkSubnets
 List of IP addresses or IP/netmask entries for networks that will be considered on local network when enforcing bandwidth restrictions.

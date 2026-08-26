@@ -90,6 +90,20 @@ Group under which jellyfin runs
 
 **Default**: `"jellyfin"`
 
+## services.declarative-jellyfin.jellyfin-ffmpeg
+Which jellyfin-ffmpeg package to use
+
+**Type**: package
+
+**Default**: `pkgs.jellyfin-ffmpeg`
+
+## services.declarative-jellyfin.jellyfin-web
+Which jellyfin-web package to use
+
+**Type**: package
+
+**Default**: `pkgs.jellyfin-web`
+
 ## services.declarative-jellyfin.logDir
 Directory where the Jellyfin logs will be stored,
 passed with `--logdir` see [#log-directory](https://jellyfin.org/docs/general/administration/configuration/#log-directory)
@@ -148,5 +162,8 @@ Options for [services.declarative-jellyfin.users](https://github.com/Sveske-Juic
 
 # branding
 Options for [services.declarative-jellyfin.branding](https://github.com/Sveske-Juice/declarative-jellyfin/blob/main/documentation/branding.md)
+
+# livetv
+Options for [services.declarative-jellyfin.livetv](https://github.com/Sveske-Juice/declarative-jellyfin/blob/main/documentation/livetv.md)
 
 
