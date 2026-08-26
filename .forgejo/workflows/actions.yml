@@ -48,9 +48,13 @@ jobs:
         run: |
           nix run .#checks.x86_64-linux.xmltests.driver
         timeout-minutes: 5
+      - name: livetv
+        run: |
+          nix run .#checks.x86_64-linux.livetv.driver
+        timeout-minutes: 5
   02_generate_documentation:
     if: forge.actor != 'baritone' && forge.ref_name == 'main'
-    needs: run_tests
+    needs: 00_run_tests
     runs-on: native
     steps:
       - name: Checkout
